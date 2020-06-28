@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import './App.css';
+import './App.scss';
+import CommentList from "./CommentList";
+
+import AdminMode from "./AdminMode";
 
 class App extends Component {
   state = { 
     name: "",
     comment: "",
     comments: [  
-      { name: "JB", message: "Youhou la famille!"},
-      { name: "Kirikou", message: "Je ne suis pas grand mais je suis vaillant"}
+      { id: 1,name: "JB", message: "Youhou la famille!"},
+      { id: 2, name: "Kirikou", message: "Je ne suis pas grand mais je suis vaillant"}
     ]
    }
 
@@ -38,29 +41,40 @@ class App extends Component {
 
   render() { 
 
-    let commentsList = this.state.comments.map(comment => {
-       return <li>{comment.name}: {comment.message}</li>
-    })
-
     return ( 
-      <div className="App">
-        <h2>Say something</h2>
-        <form onSubmit={this.handleSubmit} >
+      <div className="App container">
 
-          <input type="text" placeholder="Your name"
-          onChange={this.handleChangeName} 
-          value={this.state.name} />
+        <AdminMode />
+      <section className="columns">
+        <div className="column">
+          <h2 className="title is-2">Ajouter un commentaire</h2>
+          <form onSubmit={this.handleSubmit} className="commentForm" >
 
-          <textarea placeholder="Your comment"
-          onChange={this.handleChangeComment}
-           value={this.state.comment}
-           cols="30" rows="10"></textarea>
+            <label htmlFor="Name" className="has-text-weight-bold field mt-2">
+              Name
+              <input type="text" placeholder="Text Input"
+              onChange={this.handleChangeName} className="input control mt-2"
+              value={this.state.name} />
+            </label>
 
-          <button>Comment</button>
-        </form>
-
-        <ul>{commentsList}</ul>
-      </div>
+              <label htmlFor="Message" className="has-text-weight-bold mt-2">
+                Message
+                <textarea placeholder="Textarea"
+                className="textarea control mt-2"
+                onChange={this.handleChangeComment}
+                value={this.state.comment}
+                cols="30" rows="10"></textarea>
+              </label>
+              
+            <button className="button is-primary field mt-2">Envoyer</button>
+          </form>
+        </div>
+        <div className="column">
+          <CommentList comments={this.state.comments} />
+        </div>
+      </section>
+        </div>
+      
      );
   }
 }
